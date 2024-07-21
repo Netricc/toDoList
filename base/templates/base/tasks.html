@@ -1,0 +1,72 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+
+<style>
+    .form-control:focus {
+        box-shadow: none;
+    }
+
+    list-group list-group-item:last-child {
+        border-radius: 0 0 80px 10px;
+    }
+</style>
+
+<h1 class="display-3">{{list.name}}</h1>
+<p class="text-secondary mt-3 mb-5">{{ list.description }}</p>
+
+
+
+<form action="" class="form-group" method="POST">
+    {% csrf_token %}
+
+    <div class="container">
+        <div class="input-group mb-5">
+            <button id="createBtn" type="submit" name="submit" value="submit" class="btn btn-primary">New task</button>
+            <input type="text" name="newT" class="form-control" placeholder="Add task">
+            <button type="submit" name="save" value="save" class="btn btn-primary">Save</button>
+        </div>
+
+
+        <ul class="list-group mb-3">
+            <div class="w-100 p-3 bg-dark rounded-top">
+                <h4 class="h4 text-light">Tasks</h4>
+            </div>
+            {% for task in tasks %}
+
+            {% if task.complete %}
+
+            <li class="list-group-item" style="display: none;">
+                <input name="c{{task.id}}" class="form-check-input me-1" type="checkbox" value="clicked" checked
+                    id="firstCheckbox">
+                <label class="form-check-label" for="firstCheckbox">{{ task.title }}</label>
+            </li>
+
+            {% else %}
+            <li class="list-group-item">
+                <input name="c{{task.id}}" class="form-check-input me-1" type="checkbox" value="clicked"
+                    id="firstCheckbox">
+                <label class="form-check-label" for="firstCheckbox">{{ task.title }}</label>
+            </li>
+            {% endif %}
+
+            {% endfor %}
+        </ul>
+
+
+
+
+
+
+
+    </div>
+
+
+
+</form>
+
+
+{% endblock %}

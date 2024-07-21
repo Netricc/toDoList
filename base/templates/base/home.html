@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<h2 class="mb-5">
+    Hello 👋 {{user.username}}
+</h2>
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if user.list_set.all %}
+<ul class="list-group">
+    {% for list in user.list_set.all %}
+
+    <li class="list-group-item d-flex align-items-center justify-content-between">
+        <div><a href="tasks/{{list.id}}">{{ list.name|title }}</a> -
+            <kbd>{{ list.category }}</kbd>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="item_id" value="{{ list.id }}">
+            <button type="submit" class="btn btn-danger btn-sm" name="delete">Delete</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+
+{% else %}
+<p>It looks like you don't have any list. <a class="link" href="{% url 'createList' %}">Create one list here</a>
+</p>
+
+{% endif %}
+
+
+{% else %}
+
+<div class="d-flex justify-content-center align-items-center flex-column container text-center">
+
+    <h1 class="h1 mb-4">
+        OrginizeList
+    </h1>
+    <img class="img-fluid rounded shadow mb-5" src="{% static 'images/app_image.png' %}" alt="">
+    <p class="text-dark">OrginizeList is a simple app where you can originize your tasks created by <a
+            href="https://www.youtube.com/@netric-py9ni">Netric Master</a></p>
+
+
+    <a class="btn btn-outline-primary" href="{% url 'login' %}">Get Started</a>
+
+</div>
+{% endif %}
+
+
+
+
+{% endblock %}
